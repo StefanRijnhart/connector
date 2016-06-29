@@ -177,6 +177,8 @@ class OpenERPJobStorage(JobStorage):
         max_retries = kwargs.pop('max_retries', None)
         description = kwargs.pop('description', None)
 
+        return func(self.session, model_name, *args, **kwargs)
+
         return self.enqueue(func, model_name=model_name,
                             args=args, kwargs=kwargs,
                             priority=priority,
