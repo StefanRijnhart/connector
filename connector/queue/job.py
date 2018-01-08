@@ -306,6 +306,8 @@ class OpenERPJobStorage(JobStorage):
         job_.retry = stored.retry
         job_.max_retries = stored.max_retries
         job_.worker_hostname = stored.worker_hostname
+        job_.sequence_group = stored.sequence_group \
+            if stored.sequence_group else None
         if stored.worker_id:
             job_.worker_uuid = stored.worker_id.uuid
         if stored.company_id:
