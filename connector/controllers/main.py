@@ -1,4 +1,5 @@
 import logging
+from random import randint
 import traceback
 from cStringIO import StringIO
 
@@ -95,7 +96,9 @@ class RunJobController(http.Controller):
                     raise
 
                 retry_postpone(job, tools.ustr(err.pgerror, errors='replace'),
-                               seconds=PG_RETRY)
+                               # Nova: random delay to prevent concurrent
+                               # retries of mutual deadlocks
+                               seconds=randint(PG_RETRY, PG_RETRY+20))
                 _logger.debug('%s OperationalError, postponed', job)
 
         except NothingToDoJob as err:
