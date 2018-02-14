@@ -263,7 +263,10 @@ class OpenERPJobStorage(JobStorage):
                                   job_.args,
                                   job_.kwargs))
 
-            self.job_model.sudo().create(vals)
+            self.job_model.with_context(
+                mail_create_nosubscribe=True,
+                mail_create_nolog=True,
+                mail_notrack=True).sudo().create(vals)
 
     def load(self, job_uuid):
         """ Read a job from the Database"""
