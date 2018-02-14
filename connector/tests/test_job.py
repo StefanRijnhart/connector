@@ -565,7 +565,7 @@ class TestJobModel(common.TransactionCase):
         stored.write({'state': 'failed'})
         self.assertEqual(stored.state, FAILED)
         messages = stored.message_ids
-        self.assertEqual(len(messages), 2)
+        self.assertEqual(len(messages), 1)
 
     def test_follower_when_write_fail(self):
         group = self.env.ref('connector.group_connector_manager')
@@ -721,8 +721,8 @@ class TestJobStorageMultiCompany(common.TransactionCase):
         with s.change_context(company_id=self.other_company_a.id):
             stored = self._create_job()
         stored.sudo(self.other_user_a.id)._subscribe_users()
-        # 2 because admin + self.other_partner_a
-        self.assertEqual(len(stored.message_follower_ids), 2)
+        # 1 because self.other_partner_a
+        self.assertEqual(len(stored.message_follower_ids), 1)
         users = User.browse([SUPERUSER_ID, self.other_user_a.id])
         expected_partners = [u.partner_id for u in users]
         self.assertSetEqual(set(stored.message_follower_ids),
