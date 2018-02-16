@@ -6,7 +6,7 @@ import unittest2
 from datetime import datetime, timedelta
 from socket import gethostname
 
-from openerp import SUPERUSER_ID, exceptions
+from openerp import exceptions
 import openerp.tests.common as common
 from openerp.addons.connector.queue.job import (
     Job,
@@ -723,7 +723,7 @@ class TestJobStorageMultiCompany(common.TransactionCase):
         stored.sudo(self.other_user_a.id)._subscribe_users()
         # 1 because self.other_partner_a
         self.assertEqual(len(stored.message_follower_ids), 1)
-        users = User.browse([SUPERUSER_ID, self.other_user_a.id])
+        users = User.browse([self.other_user_a.id])
         expected_partners = [u.partner_id for u in users]
         self.assertSetEqual(set(stored.message_follower_ids),
                             set(expected_partners))
